@@ -65,15 +65,9 @@ extension SwipeTableViewCell {
     }
     
     @objc func performAccessibilityCustomAction(accessibilityCustomAction: SwipeAccessibilityCustomAction) -> Bool {
-        guard let tableView = tableView else { return false }
-        
         let swipeAction = accessibilityCustomAction.action
         
         swipeAction.handler?(swipeAction, accessibilityCustomAction.indexPath)
-        
-        if swipeAction.style == .destructive {
-            tableView.deleteRows(at: [accessibilityCustomAction.indexPath], with: .fade)
-        }
         
         return true
     }
