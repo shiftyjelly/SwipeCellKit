@@ -208,7 +208,7 @@ open class SwipeCollectionViewCell: UICollectionViewCell {
 }
 
 extension SwipeCollectionViewCell: SwipeControllerDelegate {
-    func swipeController(_ controller: SwipeController, canBeginEditingSwipeableFor orientation: SwipeActionsOrientation) -> Bool {
+    func swipeControllerCanBeginEditing(_ controller: SwipeController) -> Bool {
         return true
     }
     
