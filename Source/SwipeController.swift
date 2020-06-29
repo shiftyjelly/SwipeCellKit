@@ -10,7 +10,7 @@ import UIKit
 
 protocol SwipeControllerDelegate: class {
     
-    func swipeController(_ controller: SwipeController, canBeginEditingSwipeableFor orientation: SwipeActionsOrientation) -> Bool
+    func swipeControllerCanBeginEditing(_ controller: SwipeController) -> Bool
     
     func swipeController(_ controller: SwipeController, editActionsForSwipeableFor orientation: SwipeActionsOrientation) -> [SwipeAction]?
     
@@ -66,12 +66,11 @@ class SwipeController: NSObject {
     @objc func handlePan(gesture: UIPanGestureRecognizer) {
         guard let target = actionsContainerView, var swipeable = self.swipeable else { return }
         
-        let velocity = gesture.velocity(in: target)
-        
-        if delegate?.swipeController(self, canBeginEditingSwipeableFor: velocity.x > 0 ? .left : .right) == false {
+        if delegate?.swipeControllerCanBeginEditing(self) == false {
             return
         }
         
+        let velocity = gesture.velocity(in: target)
         switch gesture.state {
         case .began:
             if let swipeable = scrollView?.swipeables.first(where: { $0.state == .dragging }) as? UIView, self.swipeable != nil, swipeable != self.swipeable! {
@@ -358,9 +357,11 @@ extension SwipeController: UIGestureRecognizerDelegate {
             return swipedCell == nil ? false : true
         }
         
-        if gestureRecognizer == panGestureRecognizer,
-            let view = gestureRecognizer.view,
-            let gestureRecognizer = gestureRecognizer as? UIPanGestureRecognizer {
+        if gestureRecognizer == panGestureRecognizer, let view = gestureRecognizer.view, let gestureRecognizer = gestureRecognizer as? UIPanGestureRecognizer {
+            if delegate?.swipeControllerCanBeginEditing(self) == false {
+                return false
+            }
+            
             let translation = gestureRecognizer.translation(in: view)
             return abs(translation.y) <= abs(translation.x)
         }
