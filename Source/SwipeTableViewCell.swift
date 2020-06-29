@@ -180,7 +180,7 @@ open class SwipeTableViewCell: UITableViewCell {
 }
 
 extension SwipeTableViewCell: SwipeControllerDelegate {
-    func swipeController(_ controller: SwipeController, canBeginEditingSwipeableFor orientation: SwipeActionsOrientation) -> Bool {
+    func swipeControllerCanBeginEditing(_ controller: SwipeController) -> Bool {
         return delegate?.swipeCurrentlyAllowed() ?? true
     }
     
