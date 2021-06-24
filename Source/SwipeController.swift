@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-protocol SwipeControllerDelegate: class {
+protocol SwipeControllerDelegate: AnyObject {
     
     func swipeControllerCanBeginEditing(_ controller: SwipeController) -> Bool
     
